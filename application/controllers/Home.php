@@ -1,9 +1,31 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
-
-class Home extends CI_Controller {
-    public function index()
+class Home extends CI_Controller
+{
+	function __construct()
 	{
-		$this->load->view('depan_Home');
+		parent::__construct();
+		$this->load->model('m_tulisan');
+		// $this->load->model('m_galeri');
+		// $this->load->model('m_pengumuman');
+		// $this->load->model('m_agenda');
+		// $this->load->model('m_files');
+		// $this->load->model('m_pengunjung');
+		// $this->m_pengunjung->count_visitor();
+	}
+	function index()
+	{
+		$x['page_title'] = 'Home';
+		$x['berita'] = $this->m_tulisan->get_berita_home();
+		// $x['pengumuman'] = $this->m_pengumuman->get_pengumuman_home();
+		// $x['agenda'] = $this->m_agenda->get_agenda_home();
+		// $x['tot_guru'] = $this->db->get('tbl_guru')->num_rows();
+		// $x['tot_siswa'] = $this->db->get('tbl_siswa')->num_rows();
+		// $x['tot_files'] = $this->db->get('tbl_files')->num_rows();
+		// $x['tot_agenda'] = $this->db->get('tbl_agenda')->num_rows();
+		$this->load->view('halaman_depan/layout/header', $x);
+		$this->load->view('halaman_depan/layout/sidebar');
+		$this->load->view('halaman_depan/v_home');
+		$this->load->view('halaman_depan/layout/footer');
+		// $this->load->view('depan/v_home',$x);
 	}
 }
