@@ -4,7 +4,7 @@
             Detail Produk
         </div>
         <div class="card-body">
-            <?php foreach ($data as $p) : ?>
+            <?php foreach ($data as $p): ?>
                 <div class="row">
                     <div class="col-md-4">
                         <img src="<?php echo base_url() . 'assets/images/' . $p->photo; ?>" class="card-img-top">
@@ -14,31 +14,45 @@
                             <!-- Table rows displaying package details -->
                             <tr>
                                 <td>Nama Paket</td>
-                                <td><strong><?php echo $p->nama_paket ?></strong></td>
+                                <td><strong>
+                                        <?php echo $p->nama_paket ?>
+                                    </strong></td>
                             </tr>
                             <tr>
                                 <td>Tanggal Keberangkatan</td>
-                                <td><strong><?php echo $p->tgl_keberangkatan ?></strong></td>
+                                <td><strong>
+                                        <?php echo $p->tgl_keberangkatan ?>
+                                    </strong></td>
                             </tr>
                             <tr>
                                 <td>Tanggal Kembali</td>
-                                <td><strong><?php echo $p->tgl_kembali ?></strong></td>
+                                <td><strong>
+                                        <?php echo $p->tgl_kembali ?>
+                                    </strong></td>
                             </tr>
                             <tr>
                                 <td>Hotel Paket</td>
-                                <td><strong><?php echo $p->hotel ?></strong></td>
+                                <td><strong>
+                                        <?php echo $p->hotel ?>
+                                    </strong></td>
                             </tr>
                             <tr>
                                 <td>Maskapai Paket</td>
-                                <td><strong><?php echo $p->maskapai ?></strong></td>
+                                <td><strong>
+                                        <?php echo $p->maskapai ?>
+                                    </strong></td>
                             </tr>
                             <tr>
                                 <td>Porsi Paket</td>
-                                <td><strong><?php echo $p->porsi ?></strong></td>
+                                <td><strong>
+                                        <?php echo $p->porsi ?>
+                                    </strong></td>
                             </tr>
                             <tr>
                                 <td>Keterangan Paket</td>
-                                <td><strong><?php echo $p->keterangan ?></strong></td>
+                                <td><strong>
+                                        <?php echo $p->keterangan ?>
+                                    </strong></td>
                             </tr>
                             <tr>
                                 <td>Harga Paket</td>
@@ -54,12 +68,14 @@
                         <div class="btn-right d-flex justify-content-end">
                             <!-- Buttons for navigation -->
                             <a href="<?php echo base_url() . 'halaman_depan/produk' ?>" class="btn btn-primary">Kembali</a>
-                            <a href="<?php echo base_url() . 'halaman_depan/produk/tambah_pemesanan' ?>" class="btn btn-success">Beli</a>
+                            <a href="<?php echo base_url() . 'halaman_depan/produk/tambah_pemesanan' ?>"
+                                class="btn btn-success">Beli</a>
                         </div>
 
                     </div>
                 </div>
-        </div>
-    <?php endforeach; ?>
+            </div>
+        <?php endforeach; ?>
     </div>
 </div>
+Q
