@@ -78,4 +78,3 @@
         <?php endforeach; ?>
     </div>
 </div>
-Q
