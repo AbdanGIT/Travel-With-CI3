@@ -7,11 +7,13 @@ class Produk extends CI_Controller
         if ($this->session->userdata('masuk') != TRUE) {
             $url = base_url('administrator');
             redirect($url);
-        };
+        }
+        ;
         $this->load->model('m_pengumuman');
         $this->load->model('m_tulisan');
         $this->load->model('m_produk');
         $this->load->model('m_paket');
+        $this->load->model('m_transaksi');
         // $this->m_pengunjung->count_visitor();
     }
     function index()
@@ -28,5 +30,16 @@ class Produk extends CI_Controller
         } else {
             redirect('halaman_depan/detail/belum_login');
         }
+    }
+
+    function details_package()
+    {
+        $x['page_title'] = 'Produk';
+        $x['css'] = 'adminlte';
+        $this->load->view('halaman_users/jamaah/layout/header', $x);
+        $this->load->view('halaman_users/jamaah/layout/sidebar');
+        $this->load->view('halaman_users/jamaah/v_detail_paket', $x);
+        $this->load->view('halaman_users/jamaah/layout/footer');
+
     }
 }

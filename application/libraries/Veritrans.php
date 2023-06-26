@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
 
-class Midtrans {
+class Veritrans {
 
 	/**
    	* Your merchant's server key
@@ -22,14 +22,12 @@ class Midtrans {
   	public static $curlOptions = array();	
 
   	const SANDBOX_BASE_URL = 'https://api.sandbox.veritrans.co.id/v2';
-    const PRODUCTION_BASE_URL = 'https://api.veritrans.co.id/v2';
-    const SNAP_SANDBOX_BASE_URL = 'https://app.sandbox.midtrans.com/snap/v1';
-    const SNAP_PRODUCTION_BASE_URL = 'https://app.midtrans.com/snap/v1';
+  	const PRODUCTION_BASE_URL = 'https://api.veritrans.co.id/v2';
 
     public function config($params)
     {
-        Midtrans::$serverKey = $params['server_key'];
-        Midtrans::$isProduction = $params['production'];
+        Veritrans::$serverKey = $params['server_key'];
+        Veritrans::$isProduction = $params['production'];
     }
 
     /**
@@ -37,18 +35,9 @@ class Midtrans {
     */
   	public static function getBaseUrl()
   	{
-    	return Midtrans::$isProduction ?
-        	Midtrans::PRODUCTION_BASE_URL : Midtrans::SANDBOX_BASE_URL;
+    	return Veritrans::$isProduction ?
+        	Veritrans::PRODUCTION_BASE_URL : Veritrans::SANDBOX_BASE_URL;
   	}
-
-    /**
-    * @return string Veritrans API URL, depends on $isProduction
-    */
-    public static function getSnapBaseUrl()
-    {
-      return Midtrans::$isProduction ?
-          Midtrans::SNAP_PRODUCTION_BASE_URL : Midtrans::SNAP_SANDBOX_BASE_URL;
-    }
 
 	/**
 	 * Send GET request
@@ -81,7 +70,7 @@ class Midtrans {
 	 */
     public static function remoteCall($url, $server_key, $data_hash, $post = true)
     {	
-
+    
 	    $ch = curl_init();
 
 	    $curl_options = array(
@@ -96,16 +85,16 @@ class Midtrans {
 	    );
 
 	    // merging with Veritrans_Config::$curlOptions
-	    if (count(Midtrans::$curlOptions)) {
+	    if (count(Veritrans::$curlOptions)) {
 	      // We need to combine headers manually, because it's array and it will no be merged
-	      if (Midtrans::$curlOptions[CURLOPT_HTTPHEADER]) {
-	        $mergedHeders = array_merge($curl_options[CURLOPT_HTTPHEADER], Midtrans::$curlOptions[CURLOPT_HTTPHEADER]);
+	      if (Veritrans::$curlOptions[CURLOPT_HTTPHEADER]) {
+	        $mergedHeders = array_merge($curl_options[CURLOPT_HTTPHEADER], Veritrans::$curlOptions[CURLOPT_HTTPHEADER]);
 	        $headerOptions = array( CURLOPT_HTTPHEADER => $mergedHeders );
 	      } else {
 	        $mergedHeders = array();
 	      }
 
-	      $curl_options = array_replace_recursive($curl_options, Midtrans::$curlOptions, $headerOptions);
+	      $curl_options = array_replace_recursive($curl_options, Veritrans::$curlOptions, $headerOptions);
 	    }
 
 	    if ($post) {
@@ -122,36 +111,53 @@ class Midtrans {
 	    curl_setopt_array($ch, $curl_options);
 
 	    $result = curl_exec($ch);
-      $info = curl_getinfo($ch);
 	    // curl_close($ch);
-
+	   
 	    if ($result === FALSE) {
 	      throw new Exception('CURL Error: ' . curl_error($ch), curl_errno($ch));
 	    }
 	    else {
 	      $result_array = json_decode($result);
-	      if ($info['http_code'] != 201 && !in_array($result_array->status_code, array(200, 201, 202, 407)) ) {
-        $message = 'Midtrans Error (' . $info['http_code'] . '): '
-            . implode(',', $result_array->error_messages);
-        throw new Exception($message, $info['http_code']);
-
-      }
+	      if (!in_array($result_array->status_code, array(200, 201, 202, 407))) {
+	        $message = 'Veritrans Error (' . $result_array->status_code . '): '
+	            . $result_array->status_message;
+	        throw new Exception($message, $result_array->status_code);
+	      }
 	      else {
 	        return $result_array;
 	      }
 	    }
     }
 
-  public static function getSnapToken($params)
-  {
-    
-    $result = Midtrans::post(
-        Midtrans::getSnapBaseUrl() . '/transactions',
-        Midtrans::$serverKey,
-        $params);
+    public static function vtweb_charge($payloads)
+    {	
 
-    return $result->token;
-  }
+    	$result = Veritrans::post(
+        Veritrans::getBaseUrl() . '/charge',
+        Veritrans::$serverKey,
+        $payloads);
+
+        return $result->redirect_url;
+
+
+    	//$url = Veritrans::getBaseUrl();
+    	//return Veritrans::$serverKey.Veritrans::getBaseUrl() . '/charge' ;
+    }
+
+    public static function vtdirect_charge($payloads)
+    {	
+
+    	$result = Veritrans::post(
+        Veritrans::getBaseUrl() . '/charge',
+        Veritrans::$serverKey,
+        $payloads);
+
+        return $result;
+
+
+    	//$url = Veritrans::getBaseUrl();
+    	//return Veritrans::$serverKey.Veritrans::getBaseUrl() . '/charge' ;
+    }
 	
     /**
    	* Retrieve transaction status
@@ -160,9 +166,9 @@ class Midtrans {
     */
 	public static function status($id)
  	{
-    	return Midtrans::get(
-        	Midtrans::getBaseUrl() . '/' . $id . '/status',
-        	Midtrans::$serverKey,
+    	return Veritrans::get(
+        	Veritrans::getBaseUrl() . '/' . $id . '/status',
+        	Veritrans::$serverKey,
         	false);
   	}
 
@@ -173,9 +179,9 @@ class Midtrans {
    	*/
   	public static function approve($id)
   	{
-    	return Midtrans::post(
-        	Midtrans::getBaseUrl() . '/' . $id . '/approve',
-        	Midtrans::$serverKey,
+    	return Veritrans::post(
+        	Veritrans::getBaseUrl() . '/' . $id . '/approve',
+        	Veritrans::$serverKey,
         	false)->status_code;
   	}
 
@@ -186,9 +192,9 @@ class Midtrans {
    	*/
   	public static function cancel($id)
   	{
-    	return Midtrans::post(
-        	Midtrans::getBaseUrl() . '/' . $id . '/cancel',
-        	Midtrans::$serverKey,
+    	return Veritrans::post(
+        	Veritrans::getBaseUrl() . '/' . $id . '/cancel',
+        	Veritrans::$serverKey,
         	false)->status_code;
   	}
 
@@ -199,9 +205,9 @@ class Midtrans {
     */
   	public static function expire($id)
   	{
-    	return Midtrans::post(
-        	Midtrans::getBaseUrl() . '/' . $id . '/expire',
-        	Midtrans::$serverKey,
+    	return Veritrans::post(
+        	Veritrans::getBaseUrl() . '/' . $id . '/expire',
+        	Veritrans::$serverKey,
         	false);
   	}
 

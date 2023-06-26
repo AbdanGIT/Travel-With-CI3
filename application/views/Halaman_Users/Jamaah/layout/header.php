@@ -5,7 +5,10 @@
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title><?php if (!empty($page_title)) echo $page_title; ?></title>
+  <title>
+    <?php if (!empty($page_title))
+      echo $page_title; ?>
+  </title>
   <link rel="shorcut icon" href="<?php echo base_url() . 'theme/images/icon.png' ?>">
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="<?php echo base_url() . 'theme/css/bootstrap.min.css' ?>">
@@ -28,6 +31,9 @@
   <link href="<?php echo base_url() . 'theme/css/style.css' ?>" rel="stylesheet">
   <link href="<?php echo base_url() . 'theme/css/style_detail.css' ?>" rel="stylesheet">
   <link rel="stylesheet" href="<?php echo base_url() . 'assets/dist/css/' ?><?php echo $css ?>.css ?>">
+
+  <!-- midtrans -->
+
 </head>
 <?php
 function limit_words($string, $word_limit)
