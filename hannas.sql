@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 19, 2023 at 09:13 AM
+-- Generation Time: Jun 27, 2023 at 06:27 AM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 7.4.30
 
@@ -314,7 +314,7 @@ CREATE TABLE `tbl_paket` (
   `kota_keberangkatan` varchar(50) NOT NULL,
   `hotel` varchar(50) NOT NULL,
   `maskapai` varchar(50) NOT NULL,
-  `harga` varchar(50) NOT NULL,
+  `harga` int(50) NOT NULL,
   `porsi` varchar(50) NOT NULL,
   `keterangan` varchar(100) NOT NULL,
   `photo` varchar(50) NOT NULL
@@ -325,9 +325,10 @@ CREATE TABLE `tbl_paket` (
 --
 
 INSERT INTO `tbl_paket` (`id_paket`, `nama_paket`, `tgl_keberangkatan`, `tgl_kembali`, `kota_keberangkatan`, `hotel`, `maskapai`, `harga`, `porsi`, `keterangan`, `photo`) VALUES
-(1, 'Safir', '2023-06-07', '2023-06-18', 'Banjarmasin', 'Diamond', 'Batik', '10.000.000', '12 Porsi', 'Lunas', '6db0cc0b4d34f98f0da5e72b715d31e2.jpg'),
-(2, 'j', '2023-06-28', '2023-06-23', 'Banjarmasin', 'Diamond', 'Batik', '10.000.000', '29', 'sudah lunas', 'b8ef2d627bd83e6844f8d8211b0ac7ab.jpg'),
-(3, '1', '0000-00-00', '2023-06-07', '2023-06-18', 'Banjarmasin', 'Diamond', 'Batik', '10.000.000', '12 Porsi', 'Belum Lunas');
+(1, 'Safir', '2023-06-07', '2023-06-18', 'Banjarmasin', 'Diamond', 'Batik', 1000000, '12 Porsi', 'Lunas', '6db0cc0b4d34f98f0da5e72b715d31e2.jpg'),
+(2, 'j', '2023-06-28', '2023-06-23', 'Banjarmasin', 'Diamond', 'Batik', 10000000, '29', 'sudah lunas', 'fceb25d8b0b8e79bae6026aa83a2efef.jpg'),
+(4, 'Diamond', '2023-06-21', '2023-07-01', 'Banjarmasin', 'Anjum', 'garuda', 10, '1', 'dengan fasilitas terbaik k', '93f1aaad06b2654ca454d2ef2653b430.png'),
+(5, 'agent safire', '2023-06-24', '2023-07-04', 'Banjarmasin', 'Anjum', 'garuda', 32770000, '12', 'dengan fasilitas terbaik ', '999b142d97b091abcd219af2902f2f79.png');
 
 -- --------------------------------------------------------
 
@@ -350,20 +351,11 @@ CREATE TABLE `tbl_paspor` (
 
 CREATE TABLE `tbl_pembayaran` (
   `id_pembayaran` int(11) NOT NULL,
-  `jenis_pembayaran` varchar(50) NOT NULL,
+  `nama_jamaah` varchar(50) NOT NULL,
+  `telepon_jamaah` int(13) NOT NULL,
   `metode_pembayaran` varchar(50) NOT NULL,
   `status` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `tbl_pembayaran`
---
-
-INSERT INTO `tbl_pembayaran` (`id_pembayaran`, `jenis_pembayaran`, `metode_pembayaran`, `status`) VALUES
-(1, 'Cicilan 6x', 'Manual', 'belum lunas'),
-(2, 'Cicilan 3x', 'Manual', 'Sudah Transfer'),
-(5, 'Cicilan 3x', 'Tranfer', 'kkljwdk'),
-(6, 'Cicilan 3x', 'Manual', 'D');
 
 -- --------------------------------------------------------
 
@@ -384,7 +376,7 @@ CREATE TABLE `tbl_pemesanan` (
 
 INSERT INTO `tbl_pemesanan` (`id_pemesanan`, `id_jamaah_P`, `id_paket_P`, `jenis_pemesanan`) VALUES
 (8, 1, 1, 'Cicilan ke-3'),
-(10, 20, 3, 'Cicilan ke-9');
+(12, 20, 4, 'Cicilan ke-6');
 
 -- --------------------------------------------------------
 
@@ -421,7 +413,7 @@ INSERT INTO `tbl_pengguna` (`pengguna_id`, `pengguna_nama`, `pengguna_moto`, `pe
 (8, 'Erma', NULL, 'P', 'erma', '14dadbf9360ba638bd1f2bc3b104e8d8', NULL, 'Jamaah@gmail.com', '0811-5018768', NULL, NULL, NULL, NULL, 1, '3', '2023-05-06 06:39:33', '5e774b9a42497496cdd53d9c719a7c93.jpg'),
 (11, 'Agatta', NULL, 'P', 'agatta', 'be1c90deb5f624bef908826e3b15f09c', NULL, 'agatta@gmail.com', '0811-5018768', NULL, NULL, NULL, NULL, 1, '2', '2023-05-06 07:02:28', '2f217806674394d3ebb509f28e5e5978.jpg'),
 (12, 'nida', NULL, 'P', 'khofiya', 'adabc01da00037ad00b5158521a75d5f', NULL, 'khofiya@gmail.com', '0811-5018888', NULL, NULL, NULL, NULL, 1, '4', '2023-05-15 05:48:38', NULL),
-(17, 'coba', NULL, 'L', 'coba', 'c3ec0f7b054e729c5a716c8125839829', NULL, 'coba@gmail.com', '0897908890', NULL, NULL, NULL, NULL, 1, '1', '2023-06-13 06:47:39', '856cda01acc7ff13dbb9d70a3bc08c56.jpg');
+(20, 'coba', NULL, 'L', 'coba', 'c3ec0f7b054e729c5a716c8125839829', NULL, 'coba@gmail.com', '0897908890', NULL, NULL, NULL, NULL, 1, '4', '2023-06-13 06:47:39', '856cda01acc7ff13dbb9d70a3bc08c56.jpg');
 
 -- --------------------------------------------------------
 
@@ -535,6 +527,41 @@ INSERT INTO `tbl_tulisan` (`tulisan_id`, `tulisan_judul`, `tulisan_isi`, `tulisa
 (23, 'Pelaksanaan Ujian Nasional MSchool', '<p>Pelaksanaan UN (Ujian Nasional) di sekolah M-Sekolah berlangsung tentram dan damai. Terlihat ketenangan terpancar diwajah siswa berprestasi.&nbsp; Ini adalah sampel artikel Ini adalah sampel artikel&nbsp; Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel.</p>\r\n\r\n<p>Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel.</p>\r\n\r\n<p>Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel.</p>\r\n\r\n<p>Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel.</p>\r\n\r\n<p>Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel.</p>\r\n', '2017-05-17 09:41:30', 1, 'Pendidikan', 3, '12bfb1953df800c59835a2796f8c6619.jpg', 1, 'M Fikri Setiadi', 0, 'pelaksanaan-ujian-nasional-mschool'),
 (24, 'Proses belajar mengajar MSchool', '<p>Proses belajar mengajar di sekolah m-sekolah berlangsung menyenangkan. Didukung oleh instruktur yang fun dengan metode mengajar yang tidak biasa. Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel.</p>\r\n\r\n<p>Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel a Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel artikel Ini adalah sampel artikel Ini adalah sampel artikel.</p>\r\n\r\n<p>Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel .</p>\r\n\r\n<p>Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel.</p>\r\n\r\n<p>Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel Ini adalah sampel artikel.</p>\r\n', '2017-05-17 09:46:29', 1, 'Pendidikan', 162, 'ea114dc1ec5275560a5ef3238fd04722.jpg', 1, 'M Fikri Setiadi', 0, 'proses-belajar-mengajar-mschool'),
 (25, 'iPhone 8 Baru Mengungkapkan Fitur Mengecewakan', '<p>Apple CEO Tim Cook delivers the opening keynote address the 2017 Apple.</p>\r\n\r\n<p><br />\r\nSudah lama sekali sejak Apple mampu menyimpan kejutan nyata dari beledu digital dan mengungkapkan &#39;satu hal&#39; yang sebenarnya selama sebuah keynote. Fase desain dan prototyping yang panjang, ditambah dengan rantai pasokan yang diperluas, telah menghasilkan garis manufaktur yang bocor.<br />\r\n<br />\r\nTariklah permintaan yang tak terpuaskan dari si geekerati dan Anda tidak akan pernah bisa menyimpan rahasianya ... bahkan jika penonton akan berpura-pura bahwa segala sesuatu yang dikatakan Tim Cook adalah sebuah wahyu.<br />\r\n<br />\r\nSemuanya di tampilkan untuk portofolio iPhone baru, meskipun jika kita jujur ??tidak ada hal baru yang bisa dilihat. Ini hanya Tim Cook dan timnya yang membuat model tahun lalu &#39;sedikit lebih baik&#39; dan mengajukan konsumen proposisi yang sama seperti setiap produsen smartphone lainnya.<br />\r\n<br />\r\nMungkin aku berharap terlalu banyak dari Apple. Pengulangan Timey dari mimpi Silicon Valley tidak dibangun dengan risiko, mendorong amplop, atau bereksperimen dengan bentuk atau fungsinya. Bagaimana Tim Cook bisa mendorong inovasi ketika begitu banyak kekaisarannya dibangun di seputar kebutuhan akan penjualan siklis iPhone yang terjamin? Jika penjualan smartphone turun, maka yayasan Cupertino akan berada dalam bahaya.<br />\r\n<br />\r\nJawaban Apple untuk ini adalah iPhone 8. Sementara iPhone 7S dan iPhone 7S Plus menjaga harapan, iPhone 8 bisa bereksperimen dengan bentuk, harga, dan kekuatan. Ini adalah handset yang akan mendorong batas teknologi Apple dengan layar OLED yang cerah dan jelas di bawah kaca melengkung yang membentuk bagian luarnya. Inilah smartphone yang membawa kekuatan magis wireless charging ke ekosistem iOS dan akan menawarkan pengenalan wajah untuk keamanan.<br />\r\n<br />\r\nYang semua terdengar hebat tapi itu satu set poin peluru yang bisa diterapkan ke banyak handset Android terkemuka yang ada di pasaran saat ini. Bahkan dengan andalannya yang maju untuk tahun 2017, Apple melakukan sedikit lebih banyak daripada mengenalkan teknologi yang ada ke portofolio iOS.<br />\r\n<br />\r\nItu tidak terlihat seperti ini beberapa bulan yang lalu. Fitur yang diduga dikeluarkan oleh Apple dari iPhone 8 memamerkan beberapa pemikiran terbaru tentang perangkat mobile, termasuk pengisian daya nirkabel jarak jauh dan sensor biometrik tertanam di bawah layar kaca. Ini perlahan-lahan telah terbantahkan oleh industri rumahan dan desas-desus, sampai-sampai kita cukup tahu apa yang terjadi dari iPhone 8.<br />\r\n<br />\r\nTentu saja iPhone 8 (dan lebih dari kemungkinan iPhone 7S dan 7S Plus) akan mendapat keuntungan dari perubahan pada konstruksi interior. Akan ada pencantuman iOS 11 dan integrasi perangkat lunak yang ketat ke perangkat keras. Akan ada anggukan Apple untuk kesederhanaan di UI dan aplikasi pihak ketiga akan segera menghadirkan fitur lanjutan kepada pengguna rata-rata.<br />\r\n<br />\r\nIni bukan perubahan sepele, tapi yang menyoroti ini adalah menjelaskan bagaimana sosis dibuat. Mereka adalah rakit tweak untuk paket yang sama. Anda bisa menambahkan kancing diamante ke gaun Anda, mengganti lapisannya, dan mengeluarkan pinggulnya karena tahun-tahun yang lewat, tapi pakaiannya tetap sama seperti yang orang lihat berkali-kali. Itu cukup bagi bisnis Apple untuk terus melakukannya dengan baik dan membuat pemegang saham tetap bahagia, namun Anda tidak dapat terus kembali ke bidang yang sama dan berharap untuk tetap berada di puncak permainan smartphone. Sesuatu harus diberikan.<br />\r\n<br />\r\nPortofolio Apple 2017 membajak bidang yang sama persis dengan tahun-tahun sebelumnya. Tulang punggung penjualan akan terdiri dari iPhone 7S dan iPhone 7S Plus yang berulang-ulang saat Tim Cook kembali menanam benih di alur yang sama persis seperti model sebelumnya. IPhone 8 dapat diluncurkan tepat waktu, namun stok akan sulit didapat dan Apple akan, sekali lagi, tidak merilis angka penjualan. Ini akan menjadi hal baru yang menarik dan berkilau, tapi mari kita panggil apa adanya.</p>\r\n\r\n<p>Tim Cook akan menyilangkan jari-jarinya sehingga cukup banyak orang yang senang bisa &#39;membeli iPhone lain&#39; dan terus menggelontorkannya tanpa melihat persaingan. IPhone 8 adalah Apple yang bermain mengejar kemajuan teknologi kompetisi, dengan harapan tidak ada yang memperhatikan bahwa iPhone Baru Kaisar tidak semudah yang terlihat.</p>\r\n', '2018-08-08 13:26:08', 5, 'Penelitian', 3, 'a0b99616241c9aded7f2a02661798d98.jpg', 1, 'M Fikri Setiadi', 0, 'iphone-8-baru-mengungkapkan-fitur-mengecewakan');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tb_transaction`
+--
+
+CREATE TABLE `tb_transaction` (
+  `order_id` char(20) NOT NULL,
+  `customer_name` varchar(50) DEFAULT NULL,
+  `customer_email` varchar(20) DEFAULT NULL,
+  `gross_amount` int(20) DEFAULT NULL,
+  `payment_type` varchar(20) DEFAULT NULL,
+  `transaction_time` datetime DEFAULT NULL,
+  `settlement_time` datetime DEFAULT NULL,
+  `bank` varchar(20) DEFAULT NULL,
+  `va_numbers` varchar(50) DEFAULT NULL,
+  `status_message` text DEFAULT NULL,
+  `pdf_url` text DEFAULT NULL,
+  `transaction_status` char(20) DEFAULT NULL,
+  `status_code` char(3) DEFAULT NULL,
+  `transaction_id` varchar(200) DEFAULT NULL,
+  `finish_redirect_url` text DEFAULT NULL,
+  `payment_code` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `tb_transaction`
+--
+
+INSERT INTO `tb_transaction` (`order_id`, `customer_name`, `customer_email`, `gross_amount`, `payment_type`, `transaction_time`, `settlement_time`, `bank`, `va_numbers`, `status_message`, `pdf_url`, `transaction_status`, `status_code`, `transaction_id`, `finish_redirect_url`, `payment_code`) VALUES
+('1703344559', 'Muhammad ', 'futsal@poliban.ac.id', 1000000, 'bank_transfer', '2023-06-26 13:53:34', NULL, 'bca', '62095276080', 'Transaksi sedang diproses', 'https://app.sandbox.midtrans.com/snap/v1/transactions/cdec8311-7785-4302-9596-e54f0dc19b05/pdf', 'pending', '201', NULL, 'http://example.com?order_id=1703344559&status_code=201&transaction_status=pending', NULL),
+('431454700', 'Muhammad ', 'muhammadabdan918@gma', 1000000, 'bank_transfer', '2023-06-26 04:30:02', NULL, 'bca', '62095842353', 'Transaksi sedang diproses', 'https://app.sandbox.midtrans.com/snap/v1/transactions/d4685703-aa51-4b94-b772-81102f006d18/pdf', 'pending', '201', NULL, 'http://example.com?order_id=431454700&status_code=201&transaction_status=pending', NULL),
+('769250926', 'Muhammad ', 'muhammadabdan918@gma', 1000000, 'bank_transfer', '2023-06-26 04:37:11', NULL, 'bca', '62095249539', 'Transaksi sedang diproses', 'https://app.sandbox.midtrans.com/snap/v1/transactions/82c271bf-617c-47cb-98d4-807b961e6b77/pdf', 'pending', '201', NULL, 'http://example.com?order_id=769250926&status_code=201&transaction_status=pending', NULL),
+('934041200', 'Muhammad ', 'muhammadabdan918@gma', 1000000, 'bank_transfer', '2023-06-26 04:25:55', NULL, 'bri', '620950051941946026', 'Transaksi sedang diproses', 'https://app.sandbox.midtrans.com/snap/v1/transactions/f127e13c-851e-449e-89f0-41e967c24106/pdf', 'pending', '201', NULL, 'http://example.com?order_id=934041200&status_code=201&transaction_status=pending', NULL);
 
 --
 -- Indexes for dumped tables
@@ -687,6 +714,12 @@ ALTER TABLE `tbl_tulisan`
   ADD KEY `tulisan_pengguna_id` (`tulisan_pengguna_id`);
 
 --
+-- Indexes for table `tb_transaction`
+--
+ALTER TABLE `tb_transaction`
+  ADD PRIMARY KEY (`order_id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -760,7 +793,7 @@ ALTER TABLE `tbl_maskapai`
 -- AUTO_INCREMENT for table `tbl_paket`
 --
 ALTER TABLE `tbl_paket`
-  MODIFY `id_paket` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_paket` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `tbl_paspor`
@@ -778,13 +811,13 @@ ALTER TABLE `tbl_pembayaran`
 -- AUTO_INCREMENT for table `tbl_pemesanan`
 --
 ALTER TABLE `tbl_pemesanan`
-  MODIFY `id_pemesanan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id_pemesanan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `tbl_pengguna`
 --
 ALTER TABLE `tbl_pengguna`
-  MODIFY `pengguna_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `pengguna_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `tbl_pengumuman`
