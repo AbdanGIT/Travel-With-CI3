@@ -20,6 +20,7 @@ class Pembayaran extends CI_Controller
         if ($this->session->userdata('akses') == '1') {
             $x['kelas'] = $this->m_kelas->get_all_kelas();
             $x['data'] = $this->m_pembayaran->get_all_pembayaran();
+            $x['trx'] = $this->m_pembayaran->get_transaction();
             $x['page_title'] = 'Admin | Pembayaran';
             $x['css'] = 'AdminLTE.min.css';
             $this->load->view('halaman_users/admin/layout/header', $x);

@@ -1,7 +1,11 @@
 <?php
 class M_pembayaran extends CI_Model
 {
-
+ public function get_transaction()
+    {
+        $query = $this->db->get('tb_transaction');
+        return $query->result();
+    }
     function get_all_pembayaran()
     {
         $hsl = $this->db->query("SELECT * FROM tbl_pembayaran");

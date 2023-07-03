@@ -1,5 +1,3 @@
-
-
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -29,36 +27,119 @@
                             <table id="example1" class="table table-striped" style="font-size:13px;">
                                 <thead>
                                     <tr>
-                                        <th>No</th>
-                                        <th>jenis_pembayaran</th>
-                                        <th>metode_pembayaran</th>
-                                        <th>status</th>
-
-
-                                        <th style="text-align:right;">Aksi</th>
+                                        <th scope="col">Transaction Time</th>
+                                        <th scope="col">Order ID</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Payment Type</th>
+                                        <th scope="col">Gross Amount</th>
+                                        <th scope="col">Transaction Status</th>
+                                        <th scope="col">Action</th>
                                     </tr>
+                                </thead>
                                 </thead>
                                 <tbody>
                                     <?php
-                                    $no = 0;
-                                    foreach ($data->result_array() as $i) :
-                                        $no++;
-                                        $id = $i['id_pembayaran'];
-                                        $jenis_pembayaran = $i['jenis_pembayaran'];
-                                        $metode_pembayaran = $i['metode_pembayaran'];
-                                        $status = $i['status'];
+                                    if (is_array($trx) || is_object($trx)) {
+                                        foreach ($trx as $row) {
+                                            if ($row->status_code == '201') {
+                                                $color = "warning";
+                                            } else if ($row->status_code == '200') {
+                                                $color = "success";
+                                            } else {
+                                                $color = "danger";
+                                            }
+
                                     ?>
-                                        <tr>
-                                            <td><?php echo $no; ?></td>
-                                            <td><?php echo $jenis_pembayaran; ?></td>
-                                            <td><?php echo $metode_pembayaran; ?></td>
-                                            <td><?php echo $status; ?></td>
-                                            <td style="text-align:right;">
-                                                <a class="btn" data-toggle="modal" data-target="#ModalEdit<?php echo $id; ?>"><span class="fa fa-pencil"></span></a>
-                                                <a class="btn" data-toggle="modal" data-target="#ModalHapus<?php echo $id; ?>"><span class="fa fa-trash"></span></a>
-                                            </td>
-                                        </tr>
-                                    <?php endforeach; ?>
+                                            <tr>
+                                                <td><?= $row->transaction_time ?></td>
+                                                <th><?= $row->order_id ?></th>
+                                                <td><?= $row->customer_name ?></td>
+                                                <td><?= $row->payment_type ?></td>
+                                                <td>Rp <?= number_format($row->gross_amount, 0, ',', '.') ?></td>
+                                                <td><span class="badge badge-sm badge-<?= $color ?>"><?= $row->transaction_status ?></span></td>
+                                                <td><button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#Modal<?= $row->order_id ?>">Details</button></td>
+                                            </tr>
+
+                                            <!-- Modal -->
+                                            <div class="modal fade" id="Modal<?= $row->order_id ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-lg" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLabel">DETAILS <?= $row->order_id ?></h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <h4 class="mb-3">Payment Details</h4>
+                                                            <div class="form-row">
+                                                                <div class="form-group col-md-6">
+                                                                    <label">Order ID:</label>
+                                                                        <input type="text" class="form-control" value="<?= $row->order_id ?>" disabled>
+                                                                </div>
+                                                                <div class="form-group col-md-6">
+                                                                    <label">Transaction Id:</label>
+                                                                        <input type="text" class="form-control" value="<?= $row->transaction_id ?>" disabled>
+                                                                </div>
+                                                                <div class="form-group col-md-6">
+                                                                    <label">Customer Name:</label>
+                                                                        <input type="text" class="form-control" value="<?= $row->customer_name ?>" disabled>
+                                                                </div>
+                                                                <div class="form-group col-md-6">
+                                                                    <label">Customer Email:</label>
+                                                                        <input type="text" class="form-control" value="<?= $row->customer_email ?>" disabled>
+                                                                </div>
+                                                                <div class="form-group col-md-6">
+                                                                    <label">Gross Amount:</label>
+                                                                        <input type="text" class="form-control" value="<?= $row->gross_amount ?>" disabled>
+                                                                </div>
+                                                                <div class="form-group col-md-6">
+                                                                    <label">Payment Type:</label>
+                                                                        <input type="text" class="form-control" value="<?= $row->payment_type ?>" disabled>
+                                                                </div>
+                                                                <div class="form-group col-md-12">
+                                                                    <label">Transaction Time:</label>
+                                                                        <input type="text" class="form-control" value="<?= $row->transaction_time ?>" disabled>
+                                                                </div>
+                                                                <div class="form-group col-md-6">
+                                                                    <label">Bank:</label>
+                                                                        <input type="text" class="form-control" value="<?= $row->bank ?>" disabled>
+                                                                </div>
+                                                                <div class="form-group col-md-6">
+                                                                    <label">VA Numbers:</label>
+                                                                        <input type="text" class="form-control" value="<?= $row->va_numbers ?>" disabled>
+                                                                </div>
+                                                                <div class="form-group col-md-6">
+                                                                    <label">Status Message:</label>
+                                                                        <input type="text" class="form-control" value="<?= $row->status_message ?>" disabled>
+                                                                </div>
+                                                                <div class="form-group col-md-6">
+                                                                    <label">Transaction Status:</label>
+                                                                        <input type="text " class="form-control bg-<?= $color ?>" value="<?= $row->transaction_status ?>" disabled>
+                                                                </div>
+
+                                                            </div>
+                                                            <br>
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <h4 class="mb-3">Payment Instruction</h4>
+                                                                    <a href="<?= $row->pdf_url ?>" target="_blank" class="btn btn-primary">Download</a>
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <h4 class="mb-3">Finish URL</h4>
+                                                                    <a href="<?= $row->finish_redirect_url ?>" target="_blank" class="btn btn-primary">Finish Payment</a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                    <?php }
+                                    } ?>
                                 </tbody>
                             </table>
                         </div>
@@ -72,155 +153,3 @@
     </section>
     <!-- /.content -->
 </div>
-<!-- /.content-wrapper -->
-
-<!--Modal Add Pengguna-->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"><span class="fa fa-close"></span></span></button>
-                <h4 class="modal-title" id="myModalLabel">Tambah pembayaran</h4>
-            </div>
-            <form class="form-horizontal" action="<?php echo base_url() . 'halaman_users/admin/pembayaran/simpan_pembayaran' ?>" method="post" enctype="multipart/form-data">
-                <div class="modal-body">
-
-                    <div class="form-group">
-                        <label for="inputUserName" class="col-sm-4 control-label">Jenis Pembayaran</label>
-                        <div class="col-sm-7">
-                            <select name="xjenis_pembayaran" class="form-control" required>
-                                <option value="">-Pilih-</option>
-                                <option value="Cicilan 3x">Cicilan 3x</option>
-                                <option value="Cicilan 6x">Cicilan 6x</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="inputUserName" class="col-sm-4 control-label">Metode Pembayaran</label>
-                        <div class="col-sm-7">
-                            <select name="xmetode_pembayaran" class="form-control" required>
-                                <option value="">-Pilih-</option>
-                                <option value="Transfer">Transfer</option>
-                                <option value="Manual">Manual</option>
-                            </select>
-                        </div>
-                    </div>
-
-
-
-                    <div class="form-group">
-                        <label for="inputUserName" class="col-sm-4 control-label">Status</label>
-                        <div class="col-sm-7">
-                            <select name="xstatus" class="form-control" required>
-                                <option value="">-Pilih-</option>
-                                <option value="Belum Lunas">Belum Lunas</option>
-                                <option value="Sudah Lunas">Sudah Lunas</option>
-                            </select>
-                        </div>
-                    </div>
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary btn-flat" id="simpan">Simpan</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<!--Modal Edit Album-->
-<?php foreach ($data->result_array() as $i) :
-    $id = $i['id_pembayaran'];
-    $jenis_pembayaran = $i['jenis_pembayaran'];
-    $metode_pembayaran = $i['metode_pembayaran'];
-    $status = $i['status'];
-?>
-
-    <div class="modal fade" id="ModalEdit<?php echo $id; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"><span class="fa fa-close"></span></span></button>
-                    <h4 class="modal-title" id="myModalLabel">Edit pembayaran</h4>
-                </div>
-                <form class="form-horizontal" action="<?php echo base_url() . 'halaman_users/admin/pembayaran/update_pembayaran' ?>" method="post" enctype="multipart/form-data">
-                    <div class="modal-body">
-                        <input type="hidden" name="kode" value="<?php echo $id; ?>">
-
-                        <div class="form-group">
-                            <label for="inputUserName" class="col-sm-4 control-label">Jenis Pembayaran</label>
-                            <div class="col-sm-7">
-                                <select name="xjenis_pembayaran" class="form-control" required>
-                                    <option value="<?php echo $jenis_pembayaran; ?>"><?php echo $jenis_pembayaran; ?></option>
-                                    <option value="Cicilan 3x">Cicilan 3x</option>
-                                    <option value="Cicilan 6x">Cicilan 6x</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="inputUserName" class="col-sm-4 control-label">Metode Pembayaran</label>
-                            <div class="col-sm-7">
-                                <select name="xmetode_pembayaran" class="form-control" required>
-                                    <option value="<?php echo $metode_pembayaran; ?>"><?php echo $metode_pembayaran; ?></option>
-                                    <option value="Transfer">Transfer</option>
-                                    <option value="Manual">Manual</option>
-                                </select>
-                            </div>
-                        </div>
-
-
-
-                        <div class="form-group">
-                            <label for="inputUserName" class="col-sm-4 control-label">Status</label>
-                            <div class="col-sm-7">
-                                <select name="xstatus" class="form-control" required>
-                                    <option value="<?php echo $status; ?>"><?php echo $status; ?></option>
-                                    <option value="Belum Lunas">Belum Lunas</option>
-                                    <option value="Sudah Lunas">Sudah Lunas</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary btn-flat" id="simpan">Simpan</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-<?php endforeach; ?>
-<!--Modal Edit Album-->
-
-<?php foreach ($data->result_array() as $i) :
-    $id = $i['id_pembayaran'];
-    $jenis_pembayaran = $i['jenis_pembayaran'];
-    $metode_pembayaran = $i['metode_pembayaran'];
-    $status = $i['status'];
-?>
-    <!--Modal Hapus Pengguna-->
-    <div class="modal fade" id="ModalHapus<?php echo $id; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"><span class="fa fa-close"></span></span></button>
-                    <h4 class="modal-title" id="myModalLabel">Hapus pembayaran</h4>
-                </div>
-                <form class="form-horizontal" action="<?php echo base_url() . 'halaman_users/admin/pembayaran/hapus_pembayaran' ?>" method="post" enctype="multipart/form-data">
-                    <div class="modal-body">
-                        <input type="hidden" name="kode" value="<?php echo $id; ?>" />
-                        <p>Apakah Anda yakin mau menghapus pembayaran <b><?php echo $jenis_pembayaran; ?></b> ?</p>
-
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary btn-flat" id="simpan">Hapus</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-<?php endforeach; ?>
